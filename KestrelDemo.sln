@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KestrelClient", "KestrelClient\KestrelClient.csproj", "{F2B5AAE7-160C-4159-B1AD-FF26F76BC9B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KestrelServer", "KestrelServer\KestrelServer.csproj", "{62B85A09-4779-4990-8DD1-458B20F1EF93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KestrelCore", "KestrelCore\KestrelCore.csproj", "{482FA74F-1C0F-4C81-B70F-C3CB7E768ABC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2B5AAE7-160C-4159-B1AD-FF26F76BC9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2B5AAE7-160C-4159-B1AD-FF26F76BC9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2B5AAE7-160C-4159-B1AD-FF26F76BC9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2B5AAE7-160C-4159-B1AD-FF26F76BC9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B85A09-4779-4990-8DD1-458B20F1EF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B85A09-4779-4990-8DD1-458B20F1EF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B85A09-4779-4990-8DD1-458B20F1EF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B85A09-4779-4990-8DD1-458B20F1EF93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{482FA74F-1C0F-4C81-B70F-C3CB7E768ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{482FA74F-1C0F-4C81-B70F-C3CB7E768ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{482FA74F-1C0F-4C81-B70F-C3CB7E768ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{482FA74F-1C0F-4C81-B70F-C3CB7E768ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
