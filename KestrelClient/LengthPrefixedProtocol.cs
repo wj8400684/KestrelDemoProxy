@@ -23,7 +23,7 @@ public sealed class LengthPrefixedProtocol(IPacketFactoryPool packetFactoryPool)
             message = default;
             return false;
         }
-        
+
         var reader = new SequenceReader<byte>(input);
         if (!reader.TryReadLittleEndian(out short length) || reader.Remaining < length)
         {
@@ -33,7 +33,7 @@ public sealed class LengthPrefixedProtocol(IPacketFactoryPool packetFactoryPool)
 
         reader.TryRead(out var command);
 
-        var packetFactory = packetFactoryPool.Get(command) ?? throw new Exception($"un find{command}");
+        var packetFactory = packetFactoryPool.Get(command) ?? throw new Exception($"un find {command}");
 
         message = packetFactory.Create();
 
@@ -51,10 +51,10 @@ public sealed class LengthPrefixedProtocol(IPacketFactoryPool packetFactoryPool)
 
         var keySpan = output.GetSpan(1);
         output.Advance(1);
-        
+
         //写入command
-        MemoryMarshal.Write(keySpan,(byte)message.Key);
-        
+        MemoryMarshal.Write(keySpan, (byte)message.Key);
+
         //编码
         var length = message.Encode(output) + 1;
 

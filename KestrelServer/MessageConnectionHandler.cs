@@ -6,6 +6,7 @@ namespace KestrelServer;
 public sealed class MessageConnectionHandler(ILogger<MessageConnectionHandler> logger) : ConnectionHandler
 {
     private readonly LengthPrefixedProtocol _protocol = new(new DefaultPacketFactoryPool());
+    private readonly FixedHeaderPipelineFilter _pipelineFilter = new();
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
@@ -14,30 +15,32 @@ public sealed class MessageConnectionHandler(ILogger<MessageConnectionHandler> l
         var writer = connection.CreateWriter();
         var reader = connection.CreateReader();
 
-        while (true)
+        while (!connection.ConnectionClosed.IsCancellationRequested)
         {
             try
             {
-                var result = await reader.ReadAsync(_protocol);
+                var result = await reader.ReadAsync(_pipelineFilter);
 
                 if (result.IsCompleted)
                     break;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
+                break;
             }
             finally
             {
                 reader.Advance();
             }
 
-            await writer.WriteAsync(_protocol, new LoginResponse
+            var responseMessage = CommandPackage.NewMessage(CommandType.LoginReply, new LoginMessageReply
             {
-                SuccessFul = true,
+                Token = "ssssssssssss"
             });
+
+            await writer.WriteAsync(_pipelineFilter, responseMessage);
         }
-        
+
         logger.LogInformation($"断开连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");
     }
 }

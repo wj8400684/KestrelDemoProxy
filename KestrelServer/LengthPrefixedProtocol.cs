@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace KestrelCore;
 
+
+
 public sealed class LengthPrefixedProtocol(IPacketFactoryPool packetFactoryPool) :
     IMessageReader<MessageBase>,
     IMessageWriter<MessageBase>
@@ -43,10 +45,10 @@ public sealed class LengthPrefixedProtocol(IPacketFactoryPool packetFactoryPool)
 
         var keySpan = output.GetSpan(1);
         output.Advance(1);
-        
+
         //写入command
-        MemoryMarshal.Write(keySpan,(byte)message.Key);
-        
+        MemoryMarshal.Write(keySpan, (byte)message.Key);
+
         //编码
         var length = message.Encode(output) + 1;
 

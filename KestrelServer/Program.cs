@@ -5,7 +5,7 @@ var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(8081, l => l.UseConnectionHandler<MessageConnectionHandler>());
+    options.ListenAnyIP(8081, l => l.UseConnectionHandler<CommandConnectionHandler>());
 });
 
 var app = builder.Build();

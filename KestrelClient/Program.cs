@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using Bedrock.Framework;
 using Bedrock.Framework.Protocols;
+using Google.Protobuf;
 using KestrelClient;
 using KestrelCore;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,9 @@ var client = new ClientBuilder()
 await using var connection = await client.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 8081));
 Console.WriteLine($"Connected to {connection.LocalEndPoint}");
 
-var protocol = new LengthPrefixedProtocol(new DefaultPacketFactoryPool());
+//var protocol = new LengthPrefixedProtocol(new DefaultPacketFactoryPool());
+
+var protocol = new FixedHeaderPipelineFilter();
 
 var reader = connection.CreateReader();
 var writer = connection.CreateWriter();
@@ -35,11 +38,21 @@ watch.Start();
 while (watch.Elapsed.TotalSeconds < 60)
 {
     sendCount++;
-    await writer.WriteAsync(protocol, new LoginRequest
+    //await writer.WriteAsync(protocol, new LoginRequest
+    //{
+    //    Username = "wujun",
+    //    Password = "ssss",
+    //});
+    //var result = await reader.ReadAsync(protocol);
+
+    var requestMessage = CommandPackage.NewMessage(CommandType.Login, new LoginMessageRequest
     {
         Username = "wujun",
         Password = "ssss",
     });
+
+    await writer.WriteAsync(protocol, requestMessage);
+
     var result = await reader.ReadAsync(protocol);
 
     if (result.IsCompleted)
