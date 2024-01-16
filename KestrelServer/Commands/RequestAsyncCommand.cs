@@ -1,5 +1,6 @@
 using Google.Protobuf;
 using KestrelCore;
+using KestrelServer.Server;
 
 namespace KestrelServer.Commands;
 

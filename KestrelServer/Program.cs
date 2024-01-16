@@ -14,7 +14,7 @@ builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IAsyncCommand, Log
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(8081, l => l.UseConnectionHandler<CommandConnectionHandler>());
+    options.ListenNamedPipe("8081", l => l.UseConnectionHandler<CommandConnectionHandler>());
 });
 
 var app = builder.Build();

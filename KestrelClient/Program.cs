@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
-using System.Text;
 using Bedrock.Framework;
 using Bedrock.Framework.Protocols;
-using Google.Protobuf;
-using KestrelClient;
 using KestrelCore;
 using KestrelServer;
 using Microsoft.Extensions.Logging;
@@ -39,13 +36,6 @@ watch.Start();
 while (watch.Elapsed.TotalSeconds < 60)
 {
     sendCount++;
-    //await writer.WriteAsync(protocol, new LoginRequest
-    //{
-    //    Username = "wujun",
-    //    Password = "ssss",
-    //});
-    //var result = await reader.ReadAsync(protocol);
-
     var requestMessage = CommandMessage.NewMessage(CommandType.Login, new LoginMessageRequest
     {
         Username = "wujun",
