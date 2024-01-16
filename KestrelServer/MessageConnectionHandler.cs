@@ -33,12 +33,12 @@ public sealed class MessageConnectionHandler(ILogger<MessageConnectionHandler> l
                 reader.Advance();
             }
 
-            var responseMessage = CommandPackage.NewMessage(CommandType.LoginReply, new LoginMessageReply
-            {
-                Token = "ssssssssssss"
-            });
-
-            await writer.WriteAsync(_pipelineFilter, responseMessage);
+            // var responseMessage = CommandPackage.NewMessage(CommandType.LoginReply, new LoginMessageReply
+            // {
+            //     Token = "ssssssssssss"
+            // });
+            //
+            // await writer.WriteAsync(_pipelineFilter, responseMessage);
         }
 
         logger.LogInformation($"断开连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");

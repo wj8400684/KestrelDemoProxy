@@ -6,6 +6,7 @@ using Bedrock.Framework.Protocols;
 using Google.Protobuf;
 using KestrelClient;
 using KestrelCore;
+using KestrelServer;
 using Microsoft.Extensions.Logging;
 
 var loggerFactory = LoggerFactory.Create(builder =>
@@ -45,7 +46,7 @@ while (watch.Elapsed.TotalSeconds < 60)
     //});
     //var result = await reader.ReadAsync(protocol);
 
-    var requestMessage = CommandPackage.NewMessage(CommandType.Login, new LoginMessageRequest
+    var requestMessage = CommandMessage.NewMessage(CommandType.Login, new LoginMessageRequest
     {
         Username = "wujun",
         Password = "ssss",

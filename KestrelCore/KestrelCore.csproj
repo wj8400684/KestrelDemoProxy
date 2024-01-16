@@ -16,7 +16,7 @@
 		</PackageReference>
     </ItemGroup>
 	<ItemGroup>
-		<Protobuf Include="Protos\commandPackage.proto">
+		<Protobuf Include="Protos\commandMessage.proto">
 			<GrpcServices>Client</GrpcServices>
 		</Protobuf>
 	</ItemGroup>
