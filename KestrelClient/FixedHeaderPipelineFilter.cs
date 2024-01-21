@@ -18,7 +18,7 @@ public struct FixedHeaderPipelineFilter :
         ref SequencePosition examined,
         [MaybeNullWhen(false)] out CommandMessage message)
     {
-        if (input.Length == 0)
+        if (input.IsEmpty)
         {
             message = default;
             return false;
