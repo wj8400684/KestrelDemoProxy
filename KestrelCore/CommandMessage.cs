@@ -1,9 +1,12 @@
 using Google.Protobuf;
+using SuperSocket.ProtoBase;
 
 namespace KestrelCore;
 
-public sealed partial class CommandMessage
+public sealed partial class CommandMessage : IKeyedPackageInfo<CommandType>
 {
+    public const int HeaderSize = sizeof(int);
+    
     public static CommandMessage NewMessage<TContent>(CommandType commandType,
         TContent content)
         where TContent : IMessage

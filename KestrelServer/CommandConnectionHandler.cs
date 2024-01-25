@@ -1,41 +1,47 @@
-using System.Collections.ObjectModel;
-using KestrelCore;
-using KestrelServer.Commands;
+using KestrelServer.Middlewares;
 using KestrelServer.Server;
 using Microsoft.AspNetCore.Connections;
 
 namespace KestrelServer;
 
-public sealed class CommandConnectionHandler(ILogger<CommandConnectionHandler> logger,
-    IEnumerable<IAsyncCommand> commands) : ConnectionHandler
+public sealed class CommandConnectionHandler(
+    ILogger<CommandConnectionHandler> logger,
+    IServiceProvider appServices) : ConnectionHandler
 {
-    private readonly ReadOnlyDictionary<CommandType, IAsyncCommand> _commands =
-        new(commands.ToDictionary(item => item.CommandType, item => item));
+    private readonly ApplicationDelegate<CommandContext> _application = new ApplicationBuilder<CommandContext>(appServices)
+        .Use<AuthorMiddleware>()
+        .Use<CommandMiddleware>()
+        .Build();
 
     public override async Task OnConnectedAsync(ConnectionContext connection)
     {
         logger.LogInformation($"客户端连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");
 
-        var channel = new AppChannel(connection);
-
-        while (!connection.ConnectionClosed.IsCancellationRequested)
+        await using (var channel = new AppChannel(connection))
         {
-            var message = await channel.ReadAsync();
-
-            if (message == null)
-                continue;
-
             try
             {
-                if (_commands.TryGetValue(message.Key, out var command))
-                    await command.ExecuteAsync(channel, message);
+                while (!connection.ConnectionClosed.IsCancellationRequested)
+                {
+                    var message = await channel.ReadAsync();
+
+                    if (message == null)
+                        continue;
+
+                    await _application(new CommandContext
+                    {
+                        Channel = channel,
+                        Message = message,
+                    });
+                }
             }
             catch (Exception e)
             {
-                logger.LogError($"执行命令{message.Key}发生异常：{connection.ConnectionId}-{connection.RemoteEndPoint}", e);
+                logger.LogError(e, $"断开连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");
+                return;
             }
         }
 
-        logger.LogInformation($"断开连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");
+        logger.LogWarning($"断开连接：{connection.ConnectionId}-{connection.RemoteEndPoint}");
     }
 }
